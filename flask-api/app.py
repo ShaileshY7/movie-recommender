@@ -12,7 +12,7 @@ CORS(app)
 def download_models():
     try:
         if not os.path.exists('movies.pkl'):
-            print("Downloading movies.pkl...")
+            print("⬇️ Downloading movies.pkl...")
             gdown.download(
                 'https://drive.google.com/uc?id=1cmVfq8RT02n3GLxyYTgze8gNINCo_N_3',
                 'movies.pkl',
@@ -21,7 +21,7 @@ def download_models():
             )
 
         if not os.path.exists('similarity.pkl'):
-            print("Downloading similarity.pkl...")
+            print("⬇️ Downloading similarity.pkl...")
             gdown.download(
                 'https://drive.google.com/uc?id=1_okpQwMEjll81oH58wLYAKbeN6rUuRlL',
                 'similarity.pkl',
@@ -43,16 +43,37 @@ try:
     print("✅ Models loaded successfully!")
 except Exception as e:
     print("❌ Error loading models:", e)
+    movies = None
+    similarity = None
+
 
 # ---------------- ROUTES ----------------
+
+@app.route('/')
+def home():
+    return jsonify({"message": "🎬 CineMatch ML API is running!"})
+
 
 @app.route('/recommend', methods=['GET'])
 def recommend():
     movie = request.args.get('movie')
 
+    # ❗ Input validation
+    if not movie:
+        return jsonify({'error': 'Movie name is required'}), 400
+
     try:
-        # Case-insensitive search
-        movie_index = movies[movies['title'].str.lower() == movie.lower()].index[0]
+        # Clean input
+        movie = movie.lower().strip()
+
+        # 🔥 Smart search (partial + case insensitive)
+        matches = movies[movies['title'].str.lower().str.contains(movie)]
+
+        if matches.empty:
+            return jsonify({'error': 'Movie not found'}), 404
+
+        # Take best match
+        movie_index = matches.index[0]
 
         distances = similarity[movie_index]
 
@@ -71,14 +92,19 @@ def recommend():
 
         return jsonify({'recommendations': recommended})
 
-    except:
-        return jsonify({'error': 'Movie not found'}), 404
+    except Exception as e:
+        print("❌ ERROR:", e)
+        return jsonify({'error': 'Something went wrong'}), 500
 
 
 @app.route('/movies', methods=['GET'])
 def get_movies():
-    movie_list = movies['title'].tolist()
-    return jsonify({'movies': movie_list})
+    try:
+        movie_list = movies['title'].tolist()
+        return jsonify({'movies': movie_list})
+    except Exception as e:
+        print("❌ ERROR:", e)
+        return jsonify({'error': 'Cannot fetch movies'}), 500
 
 
 # ---------------- RUN SERVER ----------------
