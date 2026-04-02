@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Environment
+.env
+backend/.env
+
+# Python
+venv/
+flask-api/venv/
+__pycache__/
+*.pyc
+
+# Large ML files
+flask-api/similarity.pkl
+flask-api/movies.pkl
+
+# Build
+dist/
+frontend/dist/

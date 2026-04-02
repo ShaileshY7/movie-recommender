@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+    background-color: #111827;
+}
+
+/* Light mode overrides */
+html:not(.dark) .bg-gray-900 { background-color: #f3f4f6 !important; }
+html:not(.dark) .bg-gray-800 { background-color: #e5e7eb !important; }
+html:not(.dark) .bg-gray-700 { background-color: #d1d5db !important; }
+html:not(.dark) .text-white  { color: #111827 !important; }
+html:not(.dark) .text-gray-300 { color: #374151 !important; }
+html:not(.dark) .text-gray-400 { color: #4b5563 !important; }
+html:not(.dark) nav { background-color: #ffffff !important; border-color: #e5e7eb !important; }
