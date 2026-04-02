@@ -15,35 +15,33 @@ function ProtectedRoute({ children }) {
 }
 
 function AppRoutes() {
-    const { user } = useAuth();
+  const { user } = useAuth();
 
-    return (
-        <>
-            {user && <Navbar />}
-           <Routes>
-    {/* THIS IS THE KEY - root path for guests */}
-    <Route path="/"
-        element={!user ? <Navigate to="/landing" replace /> : <Home />}
-    />
-
-    <Route path="/landing"
-        element={!user ? <Landing /> : <Navigate to="/" replace />}
-    />
-    <Route path="/login"
-        element={!user ? <Login /> : <Navigate to="/" replace />}
-    />
-    <Route path="/register"
-        element={!user ? <Register /> : <Navigate to="/" replace />}
-    />
-    <Route path="/favourites" element={
-        <ProtectedRoute><Favourites /></ProtectedRoute>
-    } />
-    <Route path="*"
-        element={!user ? <Navigate to="/landing" replace /> : <Navigate to="/" replace />}
-    />
-</Routes>
-        </>
-    );
+  return (
+    <>
+      {user && <Navbar />}
+      <Routes>
+        <Route path="/" element={!user ? <Landing /> : <Home />} />
+        <Route
+          path="/login"
+          element={!user ? <Login /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/register"
+          element={!user ? <Register /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/favourites"
+          element={
+            <ProtectedRoute>
+              <Favourites />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </>
+  );
 }
 
 export default function App() {
