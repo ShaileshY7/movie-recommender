@@ -8,51 +8,80 @@ import gdown
 app = Flask(__name__)
 CORS(app)
 
+# ---------------- DOWNLOAD MODELS ----------------
 def download_models():
-    if not os.path.exists('movies.pkl'):
-        print("Downloading movies.pkl...")
-        gdown.download(
-            'https://drive.google.com/uc?id=1cmVfq8RT02n3GLxyYTgze8gNINCo_N_3',
-            'movies.pkl', quiet=False
-        )
-    if not os.path.exists('similarity.pkl'):
-        print("Downloading similarity.pkl...")
-        gdown.download(
-            'https://drive.google.com/uc?id=1_okpQwMEjll81oH58wLYAKbeN6rUuRlL',
-            'similarity.pkl', quiet=False
-        )
+    try:
+        if not os.path.exists('movies.pkl'):
+            print("Downloading movies.pkl...")
+            gdown.download(
+                'https://drive.google.com/uc?id=1cmVfq8RT02n3GLxyYTgze8gNINCo_N_3',
+                'movies.pkl',
+                quiet=False,
+                fuzzy=True
+            )
 
+        if not os.path.exists('similarity.pkl'):
+            print("Downloading similarity.pkl...")
+            gdown.download(
+                'https://drive.google.com/uc?id=1_okpQwMEjll81oH58wLYAKbeN6rUuRlL',
+                'similarity.pkl',
+                quiet=False,
+                fuzzy=True
+            )
+
+        print("✅ Models downloaded successfully!")
+
+    except Exception as e:
+        print("❌ Error downloading models:", e)
+
+# ---------------- LOAD MODELS ----------------
 download_models()
 
-movies = pickle.load(open('movies.pkl', 'rb'))
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+try:
+    movies = pickle.load(open('movies.pkl', 'rb'))
+    similarity = pickle.load(open('similarity.pkl', 'rb'))
+    print("✅ Models loaded successfully!")
+except Exception as e:
+    print("❌ Error loading models:", e)
+
+# ---------------- ROUTES ----------------
 
 @app.route('/recommend', methods=['GET'])
 def recommend():
     movie = request.args.get('movie')
+
     try:
-        movie_index = movies[movies['title'] == movie].index[0]
+        # Case-insensitive search
+        movie_index = movies[movies['title'].str.lower() == movie.lower()].index[0]
+
         distances = similarity[movie_index]
+
         movie_list = sorted(
             list(enumerate(distances)),
             reverse=True,
             key=lambda x: x[1]
         )[1:6]
+
         recommended = []
         for i in movie_list:
             recommended.append({
                 'id': int(movies.iloc[i[0]].movie_id),
                 'title': movies.iloc[i[0]].title
             })
+
         return jsonify({'recommendations': recommended})
+
     except:
         return jsonify({'error': 'Movie not found'}), 404
+
 
 @app.route('/movies', methods=['GET'])
 def get_movies():
     movie_list = movies['title'].tolist()
     return jsonify({'movies': movie_list})
 
+
+# ---------------- RUN SERVER ----------------
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
