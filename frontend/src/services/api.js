@@ -6,36 +6,37 @@ const TMDB_BASE = 'https://api.themoviedb.org/3';
 
 // Helper to get auth header
 const authHeader = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
     return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
+// ---------------- MOVIES ----------------
 export const fetchAllMovies = () =>
-    axios.get(`${BASE_URL}/movies`);
+    axios.get(`${BASE_URL}/api/movies`);   // ✅ FIXED
 
 export const fetchRecommendations = (movie) =>
     axios.get(`${BASE_URL}/api/recommend?movie=${encodeURIComponent(movie)}`);
 
+// ---------------- TMDB ----------------
 export const fetchTrending = () =>
     axios.get(`${TMDB_BASE}/trending/movie/week?api_key=${TMDB_KEY}`);
 
 export const fetchMovieDetails = (movieId) =>
     axios.get(`${TMDB_BASE}/movie/${movieId}?api_key=${TMDB_KEY}&append_to_response=credits,videos`);
 
-// Auth
+// ---------------- AUTH ----------------
 export const registerUser = (data) =>
-    axios.post(`${BASE_URL}/auth/register`, data);
+    axios.post(`${BASE_URL}/api/auth/register`, data);   // ✅ FIXED
 
 export const loginUser = (data) =>
-    axios.post(`${BASE_URL}/auth/login`, data);
+    axios.post(`${BASE_URL}/api/auth/login`, data);      // ✅ FIXED
 
-// Favourites - now saved to MongoDB!
+// ---------------- FAVOURITES ----------------
 export const getFavourites = () =>
-    axios.get(`${BASE_URL}/favourites`, { headers: authHeader() });
+    axios.get(`${BASE_URL}/api/favourites`, { headers: authHeader() });   // ✅ FIXED
 
 export const addFavourite = (data) =>
-    axios.post(`${BASE_URL}/favourites`, data, { headers: authHeader() });
+    axios.post(`${BASE_URL}/api/favourites`, data, { headers: authHeader() });
 
 export const removeFavourite = (movieId) =>
-    axios.delete(`${BASE_URL}/favourites/${movieId}`, { headers: authHeader() });
+    axios.delete(`${BASE_URL}/api/favourites/${movieId}`, { headers: authHeader() });
