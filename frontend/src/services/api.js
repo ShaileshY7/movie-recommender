@@ -15,7 +15,7 @@ export const fetchAllMovies = () =>
     axios.get(`${BASE_URL}/movies`);
 
 export const fetchRecommendations = (movie) =>
-    axios.get(`${BASE_URL}/recommend?movie=${encodeURIComponent(movie)}`);
+    axios.get(`${BASE_URL}/api/recommend?movie=${encodeURIComponent(movie)}`);
 
 export const fetchTrending = () =>
     axios.get(`${TMDB_BASE}/trending/movie/week?api_key=${TMDB_KEY}`);
