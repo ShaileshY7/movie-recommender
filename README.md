@@ -125,7 +125,7 @@ Frontend → Backend → Flask ML API → Recommendations → UI
 
 ## 🌐 Live Demo
 
-🚧 Coming Soon (Deployment in progress)
+movie-recommender-eight-hazel.vercel.app
 
 ---
 
