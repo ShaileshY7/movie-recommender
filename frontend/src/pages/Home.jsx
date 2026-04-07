@@ -190,24 +190,47 @@ export default function Home() {
         <div className="mt-12 md:mt-16">
           <div
             className="max-w-7xl mx-auto px-4 md:px-8 mb-4
-                flex items-center justify-between"
+                        flex items-center justify-between"
           >
             <h2
               className="text-xl md:text-2xl font-bold text-white
-                   flex items-center gap-2"
+                           flex items-center gap-2"
             >
               🔥 Trending This Week
             </h2>
-            <div
-              className="flex items-center gap-2 bg-gray-800 
-                    border border-gray-700 px-4 py-2 rounded-full"
-            >
-              <span className="text-gray-400 text-sm">Scroll</span>
-              <span className="text-gray-400 text-sm animate-bounce">👉</span>
+            {/* Arrow Buttons */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  document
+                    .getElementById("trending-scroll")
+                    .scrollBy({ left: -500, behavior: "smooth" });
+                }}
+                className="bg-gray-700 hover:bg-red-600 text-white 
+                               w-9 h-9 rounded-full flex items-center 
+                               justify-center transition-all duration-200
+                               text-lg font-bold"
+              >
+                ‹
+              </button>
+              <button
+                onClick={() => {
+                  document
+                    .getElementById("trending-scroll")
+                    .scrollBy({ left: 500, behavior: "smooth" });
+                }}
+                className="bg-gray-700 hover:bg-red-600 text-white 
+                               w-9 h-9 rounded-full flex items-center 
+                               justify-center transition-all duration-200
+                               text-lg font-bold"
+              >
+                ›
+              </button>
             </div>
           </div>
 
           <div
+            id="trending-scroll"
             style={{
               display: "flex",
               gap: "16px",
