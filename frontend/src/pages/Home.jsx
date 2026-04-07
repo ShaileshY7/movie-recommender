@@ -34,8 +34,8 @@ export default function Home() {
             const res = await fetchRecommendations(search);
             setRecommendations(res.data.recommendations);
         } catch {
-            setError('❌ Movie not found! Please try another name.');
-        }
+           setError('Service is waking up! Please wait 30 seconds and try again. 🔄');
+         }
         setLoading(false);
     };
 

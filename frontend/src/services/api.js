@@ -12,10 +12,12 @@ const authHeader = () => {
 
 // ---------------- MOVIES ----------------
 export const fetchAllMovies = () =>
-    axios.get(`${BASE_URL}/api/movies`);   // ✅ FIXED
+    axios.get(`${BASE_URL}/api/movies`, { timeout: 120000 });
 
 export const fetchRecommendations = (movie) =>
-    axios.get(`${BASE_URL}/api/recommend?movie=${encodeURIComponent(movie)}`);
+    axios.get(`${BASE_URL}/api/recommend?movie=${encodeURIComponent(movie)}`, {
+        timeout: 120000
+    });
 
 // ---------------- TMDB ----------------
 export const fetchTrending = () =>
@@ -26,14 +28,14 @@ export const fetchMovieDetails = (movieId) =>
 
 // ---------------- AUTH ----------------
 export const registerUser = (data) =>
-    axios.post(`${BASE_URL}/api/auth/register`, data);   // ✅ FIXED
+    axios.post(`${BASE_URL}/api/auth/register`, data);
 
 export const loginUser = (data) =>
-    axios.post(`${BASE_URL}/api/auth/login`, data);      // ✅ FIXED
+    axios.post(`${BASE_URL}/api/auth/login`, data);
 
 // ---------------- FAVOURITES ----------------
 export const getFavourites = () =>
-    axios.get(`${BASE_URL}/api/favourites`, { headers: authHeader() });   // ✅ FIXED
+    axios.get(`${BASE_URL}/api/favourites`, { headers: authHeader() });
 
 export const addFavourite = (data) =>
     axios.post(`${BASE_URL}/api/favourites`, data, { headers: authHeader() });
