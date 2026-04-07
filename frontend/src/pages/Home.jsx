@@ -54,7 +54,6 @@ export default function Home() {
         setRecommendations([]);
         setSearchedMovie(search);
 
-        // Save to recent searches
         const updated = [search, ...recentSearches.filter(s => s !== search)].slice(0, 5);
         setRecentSearches(updated);
         localStorage.setItem('recentSearches', JSON.stringify(updated));
@@ -75,6 +74,7 @@ export default function Home() {
 
     return (
         <div className="min-h-screen bg-gray-900 pb-16">
+
             {/* Hero */}
             <HeroSection />
 
@@ -99,13 +99,13 @@ export default function Home() {
                                     onClick={wakeUpServices}
                                     disabled={waking}
                                     className="bg-red-600 hover:bg-red-700 active:scale-95
-                                               text-white px-6 py-2 rounded-lg text-sm 
+                                               text-white px-6 py-2 rounded-lg text-sm
                                                font-bold transition-all disabled:opacity-50
                                                flex items-center gap-2"
                                 >
                                     {waking ? (
                                         <>
-                                            <div className="w-4 h-4 border-2 border-white/30 
+                                            <div className="w-4 h-4 border-2 border-white/30
                                                             border-t-white rounded-full animate-spin" />
                                             Waking up...
                                         </>
@@ -116,8 +116,8 @@ export default function Home() {
                             </div>
                         ) : (
                             <p className={`font-medium ${
-                                error.includes('✅') 
-                                    ? 'text-green-400' 
+                                error.includes('✅')
+                                    ? 'text-green-400'
                                     : 'text-yellow-400'
                             }`}>
                                 {error}
@@ -173,22 +173,29 @@ export default function Home() {
                 />
             </div>
 
-            {/* Trending Section */}
+            {/* Trending Section - Netflix style horizontal scroll */}
             {trending.length > 0 && (
                 <div className="mt-12 md:mt-16">
-                    <div className="max-w-7xl mx-auto px-4 md:px-8 mb-4 
+                    <div className="max-w-7xl mx-auto px-4 md:px-8 mb-4
                                     flex items-center justify-between">
-                        <h2 className="text-xl md:text-2xl font-bold text-white 
+                        <h2 className="text-xl md:text-2xl font-bold text-white
                                        flex items-center gap-2">
                             🔥 Trending This Week
                         </h2>
                         <span className="text-gray-500 text-sm">Scroll →</span>
                     </div>
-                    <div className="flex gap-3 md:gap-4 overflow-x-auto 
-                                    px-4 md:px-8 pb-4"
-                         style={{ scrollbarWidth: 'none' }}>
+
+                    <div style={{
+                        display: 'flex',
+                        gap: '16px',
+                        overflowX: 'auto',
+                        padding: '0 32px 16px',
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                        WebkitOverflowScrolling: 'touch'
+                    }}>
                         {trending.map(movie => (
-                            <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
+                            <div key={movie.id} style={{ flexShrink: 0, width: '160px' }}>
                                 <MovieCard
                                     movie={{
                                         id: movie.id,
